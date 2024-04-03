@@ -1,9 +1,9 @@
 ## Can FlashAttention Statistics be Learned?
-This is a small project that I worked on that tries to learn the statistics (`m(x)` and `l(x)`) computed in [FlashAttention](https://github.com/Dao-AILab/flash-attention). The basic idea is as follows:
+This is a small project that I worked on that tries to learn the statistics ($m(x)$ and $l(x)$) computed in [FlashAttention](https://github.com/Dao-AILab/flash-attention). The basic idea is as follows:
 $softmax([A_1, A_2, ... A_N]) = [\alpha_1 * softmax(A_1), \alpha_2 * softmax(A_2), ... \alpha_N * softmax(A_N)]$
 Here, $\alpha_i \in \mathcal{R}^{S}$, where $S$ is the sequence length. This allows the softmax operation to be performed in blocks, enabling sequence parallelism -- i.e., the operation $softmax(QK^T)$ can be performed in independent blocks (hence processed in parallel). The original FlashAttention paper computes the statistics over each iteration of a for loop, as each block of Q and K is loaded. In this project, I try to learn these statistics (or scales) $\alpha_1 ... \alpha_N$.
 
-**NOTE:** During training, _all_ layers of the model are _frozen_ and _only_ the scales are learned.
+**NOTE: During training, _all_ layers of the model are _frozen_ and _only_ the scales are learned.**
 
 ### Running the code
 
@@ -43,5 +43,5 @@ The following PPL values are obtained on Wikitext-2, with the learned scales. Th
 #### Visualizations
 Comparisons of generated attention maps and spikiness (For reference on what "spikiness" means, please see [this](https://arxiv.org/abs/2402.04347) paper on Softmax mimicry). The plots titled "no trained statistics" refers to cases where the softmax is broken into blocks without applying any correction with the scales. When the learned scales are applied, the softmax outputs match the ground truth baseline.
 
-![alt text](assets/attention_weights.png)
-![alt text](assets/Spikiness.png)
+![alt text](attention_weights.png)
+![alt text](Spikiness.png)
